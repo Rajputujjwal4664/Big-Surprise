@@ -177,50 +177,43 @@ document.addEventListener("DOMContentLoaded", () => {
        ENTER → HACK
     ===================================================== */
 
-    enterButton?.addEventListener(
-        "click",
-        startReveal
-    );
+ /* =====================================================
+   ENTER → INSTANT LOCK / HACK SCREEN
+===================================================== */
 
+function startReveal() {
+    const openingScreen = document.querySelector(".opening-screen");
+    const warningScreen = document.querySelector("#warningScreen");
 
-    function startReveal() {
-
-        if (!openingScreen || !warningScreen) {
-            return;
-        }
-
-        openingScreen.style.transition =
-            "opacity .8s ease";
-
-        openingScreen.style.opacity = "0";
-
-        openingScreen.style.pointerEvents =
-            "none";
-
-
-        setTimeout(() => {
-
-            openingScreen.style.display =
-                "none";
-
-            warningScreen.style.display =
-                "flex";
-
-            warningScreen.style.visibility =
-                "visible";
-
-            warningScreen.style.opacity =
-                "1";
-
-
-            startMatrix();
-
-            startScanning();
-
-        }, 800);
-
+    // Opening screen ko turant hide karo
+    if (openingScreen) {
+        openingScreen.style.display = "none";
     }
 
+    // Lock/hack screen ko turant show karo
+    if (warningScreen) {
+        warningScreen.style.display = "flex";
+        warningScreen.style.visibility = "visible";
+        warningScreen.style.opacity = "1";
+    }
+
+    // Background aur scanning turant start
+    if (typeof startMatrix === "function") {
+        startMatrix();
+    }
+
+    if (typeof startScanning === "function") {
+        startScanning();
+    }
+}
+
+/* =====================================================
+   OPENING → HACK SCAN
+===================================================== */
+
+enterButton?.addEventListener("click", () => {
+    startReveal();
+});
 
     /* =====================================================
        MATRIX
@@ -1719,124 +1712,143 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function setupCake() {
 
-        if (!blowCandlesBtn) {
-            return;
-        }
+    if (!blowCandlesBtn) {
+        return;
+    }
+
+    // =========================================
+    // RESET STATE
+    // =========================================
+
+    wishSent = false;
+    candlesBlown = false;
 
 
-        candlesBlown =
-            false;
+    // =========================================
+    // BLOW BUTTON — LOCKED
+    // =========================================
+
+    blowCandlesBtn.disabled = true;
+
+    blowCandlesBtn.classList.add("locked");
+    blowCandlesBtn.classList.remove("unlocked");
+
+    blowCandlesBtn.innerHTML =
+        "🔒 Make your wish first";
 
 
-        /*
-         * BLOW BUTTON LOCKED
-         */
+    // =========================================
+    // RESET WISH
+    // =========================================
 
-        blowCandlesBtn.disabled =
-            true;
+    if (wishInput) {
+        wishInput.value = "";
+    }
 
-        blowCandlesBtn.classList.add(
-            "locked"
-        );
+    if (wishCount) {
+        wishCount.textContent = "0";
+    }
 
-        blowCandlesBtn.classList.remove(
+    if (wishStatus) {
+        wishStatus.textContent = "";
+    }
+
+
+    // =========================================
+    // RESET LOCK MESSAGE
+    // =========================================
+
+    if (wishLockMessage) {
+
+        wishLockMessage.textContent =
+            "✨ Pehle dil se ek wish maango...";
+
+        wishLockMessage.classList.remove(
             "unlocked"
         );
-
-        blowCandlesBtn.innerHTML =
-            "🔒 Make your wish first";
+    }
 
 
-        /*
-         * RESET MESSAGE
-         */
+    // =========================================
+    // RESET BLOW MESSAGE
+    // =========================================
 
-        blowMessage?.classList.remove(
+    if (blowMessage) {
+
+        blowMessage.classList.remove(
             "show"
         );
 
-
-        /*
-         * RESET FLOWERS
-         */
-
-        if (petalContainer) {
-
-            petalContainer.innerHTML =
-                "";
-
-        }
+        blowMessage.textContent = "";
+    }
 
 
-        /*
-         * RESET VIDEO
-         */
+    // =========================================
+    // RESET FLOWERS
+    // =========================================
 
-        if (secretVideo) {
+    if (petalContainer) {
 
-            secretVideo.classList.remove(
-                "show"
-            );
-
-            secretVideo.style.display =
-                "";
-
-        }
-
-
-        if (revealVideoBtn) {
-
-            revealVideoBtn.style.display =
-                "none";
-
-        }
-
-
-        /*
-         * RESET CANDLES
-         */
-
-        const candles =
-            document.querySelectorAll(
-                "#cakeScene .candle"
-            );
-
-
-        candles.forEach(
-            candle => {
-
-                candle.classList.remove(
-                    "blown"
-                );
-
-            }
-        );
-
-
-        /*
-         * CHECK SAVED WISH
-         */
-
-        const savedWish =
-            localStorage.getItem(
-                "birthdayWish"
-            );
-
-
-        if (
-            savedWish &&
-            savedWish.trim()
-        ) {
-
-            wishSent =
-                true;
-
-            unlockBlowButton();
-
-        }
+        petalContainer.innerHTML = "";
 
     }
 
+
+    // =========================================
+    // RESET VIDEO
+    // =========================================
+
+    if (secretVideo) {
+
+        secretVideo.classList.remove("show");
+
+        const video =
+            secretVideo.querySelector("video");
+
+        if (video) {
+
+            video.pause();
+            video.currentTime = 0;
+
+        }
+    }
+
+
+    if (revealVideoBtn) {
+
+        revealVideoBtn.style.display =
+            "inline-flex";
+
+    }
+
+
+    // =========================================
+    // RESET CANDLES
+    // =========================================
+
+    const candles =
+        document.querySelectorAll(
+            "#cakeScene .candle"
+        );
+
+    candles.forEach(candle => {
+
+        candle.classList.remove("blown");
+
+    });
+
+
+    // =========================================
+    // IMPORTANT
+    // =========================================
+    // YAHAN localStorage CHECK NAHI HOGA.
+    //
+    // Page open hote hi:
+    // Wish → Send → Blow Unlock
+    //
+    // Purani saved wish se button unlock nahi hoga.
+
+}
 
     /* =====================================================
        WISH CHARACTER COUNT
@@ -2084,453 +2096,258 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function blowCandles() {
 
-        /*
-         * WISH CHECK
-         */
+    /* Wish required */
 
-        if (!wishSent) {
+    if (!wishSent) {
 
-            if (wishStatus) {
-
-                wishStatus.textContent =
-                    "✨ Pehle apni wish likho aur Send My Wish dabao.";
-
-            }
-
-            return;
-
+        if (wishStatus) {
+            wishStatus.textContent =
+                "✨ Pehle dil se ek wish maango aur Send My Wish dabao.";
         }
 
-
-        if (candlesBlown) {
-            return;
-        }
+        return;
+    }
 
 
-        const candles =
-            document.querySelectorAll(
-                "#cakeScene .candle"
-            );
+    /* Already blown */
+
+    if (candlesBlown) {
+        return;
+    }
 
 
-        if (!candles.length) {
-
-            console.error(
-                "No candles found inside #cakeScene"
-            );
-
-            return;
-
-        }
-
-
-        candlesBlown =
-            true;
-
-
-        blowCandlesBtn.disabled =
-            true;
-
-        blowCandlesBtn.classList.add(
-            "unlocked"
+    const candles =
+        document.querySelectorAll(
+            "#cakeScene .candle"
         );
 
 
+    if (!candles.length) {
+        return;
+    }
+
+
+    candlesBlown = true;
+
+
+    if (blowCandlesBtn) {
+
+        blowCandlesBtn.disabled = true;
+
         blowCandlesBtn.innerHTML =
             "🌬️ Blowing...";
+
+    }
+
+
+    if (wishStatus) {
+
+        wishStatus.textContent =
+            "🌬️ Make your wish...";
+
+    }
+
+
+    /* =========================================
+       BLOW CANDLES ONE BY ONE
+    ========================================= */
+
+    candles.forEach((candle, index) => {
+
+        setTimeout(() => {
+
+            candle.classList.add("blown");
+
+        }, index * 350);
+
+    });
+
+
+    /*
+     * Wait until all candles are blown
+     */
+
+    const candlesDoneTime =
+        (candles.length - 1) * 350 + 700;
+
+
+    setTimeout(() => {
+
+        if (blowMessage) {
+
+            blowMessage.textContent =
+                "✨ Wish made... Happy Birthday ❤️";
+
+            blowMessage.classList.add("show");
+
+        }
+
+
+        if (blowCandlesBtn) {
+
+            blowCandlesBtn.innerHTML =
+                "✨ Wish Made ❤️";
+
+        }
 
 
         if (wishStatus) {
 
             wishStatus.textContent =
-                "🌬️ Making your wish...";
+                "🌸 Your wish is on its way...";
 
         }
 
 
-        /*
-         * CANDLES BLOW ONE BY ONE
-         */
+        /* =========================================
+           FLOWER SHOWER
+        ========================================= */
 
-        candles.forEach(
-            (candle, index) => {
-
-                setTimeout(
-                    () => {
-
-                        candle.classList.add(
-                            "blown"
-                        );
-
-                    },
-                    index * 350
-                );
-
-            }
-        );
+        startFlowerRain();
 
 
-        /*
-         * AFTER CANDLES
-         */
+    }, candlesDoneTime);
 
-        const candleTime =
-            candles.length * 350;
+}
 
 
-        setTimeout(
-            () => {
+/* =========================================================
+   FLOWER SHOWER — CAKE AREA
+========================================================= */
 
-                if (blowMessage) {
+function startFlowerRain() {
 
-                    blowMessage.textContent =
-                        "✨ Wish made... Happy Birthday ❤️";
+    if (!petalContainer) {
+        console.error("petalContainer not found");
+        return;
+    }
 
-                    blowMessage.classList.add(
-                        "show"
-                    );
+    // Purane flowers clear
+    petalContainer.innerHTML = "";
 
-                }
+    // Flower container visible
+    petalContainer.classList.add("active");
 
+    const flowers = [
+        "🌹",
+        "🌸",
+        "🌺",
+        "🌷",
+        "🌼",
+        "🌻"
+    ];
 
-                blowCandlesBtn.innerHTML =
-                    "✨ Wish Made ❤️";
+    // First flower shower
+    for (let i = 0; i < 90; i++) {
 
-
-                if (wishStatus) {
-
-                    wishStatus.textContent =
-                        "🌸 Something beautiful is coming...";
-
-                }
-
-
-                /*
-                 * FLOWERS START
-                 */
-
-                startFlowerRain();
-
-
-                /*
-                 * VIDEO AFTER FLOWERS
-                 */
-
-                setTimeout(
-                    openSecretVideo,
-                    4500
-                );
-
-
-            },
-            candleTime + 500
-        );
+        setTimeout(() => {
+            createCakePetal(flowers);
+        }, i * 55);
 
     }
 
+    // Second flower shower
+    setTimeout(() => {
 
-    /* =====================================================
-       FLOWER RAIN
-    ===================================================== */
+        for (let i = 0; i < 45; i++) {
 
-    function startFlowerRain() {
+            setTimeout(() => {
+                createCakePetal(flowers);
+            }, i * 70);
 
-        if (!petalContainer) {
-            return;
         }
 
+    }, 2200);
 
-        const flowers = [
+    // Flower shower ke 6.5 second baad Thank You
+    setTimeout(() => {
+        showThankYouScreen();
+    }, 6500);
 
-            "🌸",
-            "🌺",
-            "🌷",
-            "🪷",
-            "💮",
-            "🌼",
-            "🌻"
+}
 
+/* =========================================================
+   CREATE FLOWER AROUND CAKE
+========================================================= */
+
+function createCakePetal(flowers) {
+
+    if (!petalContainer) {
+        return;
+    }
+
+    const petal =
+        document.createElement("div");
+
+    petal.className = "petal";
+
+    petal.textContent =
+        flowers[
+            Math.floor(
+                Math.random() * flowers.length
+            )
         ];
 
 
-        /*
-         * BIG WAVE
-         */
+    /*
+     * Cake ke aas-paas X position
+     */
 
-        for (
-            let i = 0;
-            i < 80;
-            i++
-        ) {
+    petal.style.left =
+        (15 + Math.random() * 70) + "%";
 
-            setTimeout(
-                () => {
 
-                    createPetal(
-                        flowers
-                    );
+    /*
+     * Cake ke aas-paas se start
+     * top se nahi
+     */
 
-                },
-                i * 65
-            );
+    petal.style.top =
+        (25 + Math.random() * 25) + "%";
 
-        }
 
+    petal.style.fontSize =
+        (18 + Math.random() * 24) + "px";
 
-        /*
-         * SECOND WAVE
-         */
 
-        setTimeout(
-            () => {
+    /*
+     * Neeche cake ke around fall karega
+     */
 
-                for (
-                    let i = 0;
-                    i < 40;
-                    i++
-                ) {
-
-                    setTimeout(
-                        () => {
-
-                            createPetal(
-                                flowers
-                            );
-
-                        },
-                        i * 100
-                    );
-
-                }
-
-            },
-            2500
-        );
-
-    }
-
-
-    /* =====================================================
-       CREATE PETAL
-    ===================================================== */
-
-    function createPetal(flowers) {
-
-        if (!petalContainer) {
-            return;
-        }
-
-
-        const petal =
-            document.createElement(
-                "div"
-            );
-
-
-        petal.className =
-            "petal";
-
-
-        petal.textContent =
-            flowers[
-                Math.floor(
-                    Math.random() *
-                    flowers.length
-                )
-            ];
-
-
-        petal.style.left =
-            Math.random() * 100 + "%";
-
-
-        petal.style.fontSize =
-            (
-                16 +
-                Math.random() * 22
-            ) + "px";
-
-
-        petal.style.animationDuration =
-            (
-                3 +
-                Math.random() * 4
-            ) + "s";
-
-
-        petal.style.animationDelay =
-            (
-                Math.random() * .5
-            ) + "s";
-
-
-        petalContainer.appendChild(
-            petal
-        );
-
-
-        setTimeout(
-            () => {
-
-                petal.remove();
-
-            },
-            8500
-        );
-
-    }
-
-
-    /* =====================================================
-       FLOWERS → SECRET VIDEO
-    ===================================================== */
-
-    function openSecretVideo() {
-
-        if (!secretVideo) {
-
-            console.error(
-                "secretVideo not found"
-            );
-
-            return;
-
-        }
-
-
-        /*
-         * STOP BIRTHDAY MUSIC
-         */
-
-        pauseBirthdayMusic();
-
-
-        /*
-         * HIDE MUSIC BUTTON
-         */
-
-        if (musicButton) {
-
-            musicButton.classList.remove(
-                "playing"
-            );
-
-            musicButton.style.display =
-                "none";
-
-        }
-
-
-        /*
-         * HIDE CAKE
-         */
-
-        if (cakeScene) {
-
-            cakeScene.style.transition =
-                "opacity 1s ease, transform 1s ease";
-
-            cakeScene.style.opacity =
-                "0";
-
-            cakeScene.style.transform =
-                "scale(.96)";
-
-        }
-
-
-        /*
-         * SHOW VIDEO AFTER CAKE FADE
-         */
-
-        setTimeout(
-            () => {
-
-                if (cakeScene) {
-
-                    cakeScene.style.display =
-                        "none";
-
-                }
-
-
-                secretVideo.style.display =
-                    "flex";
-
-                secretVideo.style.visibility =
-                    "visible";
-
-                secretVideo.style.opacity =
-                    "0";
-
-
-                secretVideo.classList.add(
-                    "show"
-                );
-
-
-                requestAnimationFrame(
-                    () => {
-
-                        secretVideo.style.opacity =
-                            "1";
-
-                    }
-                );
-
-
-                const video =
-                    secretVideo.querySelector(
-                        "video"
-                    );
-
-
-                if (video) {
-
-                    video.currentTime =
-                        0;
-
-
-                    video.muted =
-                        false;
-
-
-                    video.volume =
-                        1;
-
-
-                    video.play()
-                        .catch(
-                            error => {
-
-                                console.log(
-                                    "Video autoplay blocked:",
-                                    error
-                                );
-
-                            }
-                        );
-
-                }
-
-            },
-            1000
-        );
-
-    }
-
-
-    /* =====================================================
-       OPTIONAL VIDEO BUTTON
-       Agar HTML mein button hai to manually bhi video
-       open kar sakega.
-    ===================================================== */
-
-    revealVideoBtn?.addEventListener(
-        "click",
-        openSecretVideo
+    petal.style.setProperty(
+        "--fall-x",
+        ((Math.random() - 0.5) * 220) + "px"
     );
 
+
+    petal.style.setProperty(
+        "--fall-y",
+        (180 + Math.random() * 250) + "px"
+    );
+
+
+    petal.style.animationDuration =
+        (3.5 + Math.random() * 2.5) + "s";
+
+
+    petal.style.animationDelay =
+        (Math.random() * 0.3) + "s";
+
+
+    petalContainer.appendChild(petal);
+
+
+    /*
+     * Remove after animation
+     */
+
+    setTimeout(() => {
+
+        petal.remove();
+
+    }, 7000);
+}
+    
 
     /* =====================================================
        INITIAL STATE
@@ -2558,3 +2375,387 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 });
+
+/* =========================================================
+   RANDOM BACKGROUND STARS
+========================================================= */
+
+function createBackgroundStars() {
+
+    const starContainer =
+        document.querySelector(".stars");
+
+    if (!starContainer) {
+        return;
+    }
+
+    /* Purane generated stars remove */
+
+    starContainer.innerHTML = "";
+
+
+    /*
+     * Desktop = 180 stars
+     * Mobile = 100 stars
+     */
+
+    const starCount =
+        window.innerWidth <= 600
+            ? 100
+            : 180;
+
+
+    for (let i = 0; i < starCount; i++) {
+
+        const star =
+            document.createElement("div");
+
+        star.className =
+            "background-star";
+
+
+        /*
+         * Random position
+         */
+
+        star.style.left =
+            Math.random() * 100 + "%";
+
+        star.style.top =
+            Math.random() * 100 + "%";
+
+
+        /*
+         * Random size
+         */
+
+        const size =
+            1 +
+            Math.random() * 1.8;
+
+        star.style.width =
+            size + "px";
+
+        star.style.height =
+            size + "px";
+
+
+        /*
+         * Random brightness
+         */
+
+        star.style.opacity =
+            0.25 +
+            Math.random() * 0.65;
+
+
+        /*
+         * Different twinkle timing
+         */
+
+        star.style.animationDuration =
+            (
+                15 +
+                Math.random() * 20
+            ) + "s";
+
+
+        star.style.animationDelay =
+            (
+                Math.random() * 20
+            ) + "s";
+
+
+        starContainer.appendChild(star);
+    }
+}
+
+
+/*
+ * Start stars when page loads
+ */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    createBackgroundStars
+);
+
+
+  /* =========================================================
+   THANK YOU SCREEN
+========================================================= */
+
+function showThankYouScreen() {
+
+    // Agar screen pehle se bani hai toh dobara mat banao
+    if (document.getElementById("thankYouScreen")) return;
+
+    const screen = document.createElement("div");
+
+    screen.id = "thankYouScreen";
+
+    screen.style.cssText = `
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background:
+            radial-gradient(circle at top, #5b006f 0%, transparent 45%),
+            linear-gradient(135deg, #12001f, #350044, #090014);
+        color: white;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+    `;
+
+    screen.innerHTML = `
+        <div class="thank-you-content">
+
+            <div class="thank-you-om">ॐ</div>
+
+            <h1>Thank You Riya Ji ❤️</h1>
+
+            <p class="thank-you-main">
+                Aapne meri chhoti si duniya ko<br>
+                itna special bana diya ✨
+            </p>
+
+            <p class="thank-you-sub">
+                Aapki smile hamesha aise hi chamakti rahe,<br>
+                aur har wish sach ho jaaye 🌸
+            </p>
+
+            <div class="thank-you-line"></div>
+
+            <p class="thank-you-footer">
+                Made with love, just for you 💖
+            </p>
+
+            <p class="developer-text">
+                Designed by Developer Rajput Ujjwal
+            </p>
+
+            <div class="close-countdown">
+                This surprise will end in
+                <span id="closeTimer">30</span>
+            </div>
+
+        </div>
+    `;
+
+    document.body.appendChild(screen);
+
+    // Glowing stars
+    for (let i = 0; i < 45; i++) {
+
+        const star = document.createElement("span");
+
+        star.style.cssText = `
+            position: absolute;
+            width: ${Math.random() * 3 + 1}px;
+            height: ${Math.random() * 3 + 1}px;
+            background: white;
+            border-radius: 50%;
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            opacity: ${Math.random() * 0.7 + 0.3};
+            animation: thankYouTwinkle ${
+                Math.random() * 3 + 2
+            }s infinite alternate;
+        `;
+
+        screen.appendChild(star);
+    }
+
+    // Thank You screen ki CSS
+    const style = document.createElement("style");
+
+    style.textContent = `
+        #thankYouScreen .thank-you-content {
+            position: relative;
+            z-index: 2;
+            padding: 25px;
+            animation: thankYouAppear 1.5s ease;
+        }
+
+        #thankYouScreen .thank-you-om {
+            font-size: 70px;
+            margin-bottom: 15px;
+            animation: thankYouGlow 2s infinite alternate;
+        }
+
+        #thankYouScreen h1 {
+            font-size: 42px;
+            margin: 10px 0 20px;
+            color: #ffd6ff;
+            text-shadow: 0 0 15px #ff69d9;
+        }
+
+        #thankYouScreen .thank-you-main {
+            font-size: 21px;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        #thankYouScreen .thank-you-sub {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-top: 20px;
+            color: #ffd9f7;
+        }
+
+        #thankYouScreen .thank-you-line {
+            width: 150px;
+            height: 2px;
+            margin: 28px auto;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                #ff8de7,
+                transparent
+            );
+        }
+
+        #thankYouScreen .thank-you-footer {
+            font-size: 16px;
+            color: #ffc9f4;
+            margin-bottom: 8px;
+        }
+
+        #thankYouScreen .developer-text {
+            font-size: 14px;
+            color: #d9b6d5;
+            margin-bottom: 25px;
+        }
+
+        #thankYouScreen .close-countdown {
+            font-size: 15px;
+            color: #e8cde5;
+        }
+
+        #thankYouScreen #closeTimer {
+            display: inline-block;
+            min-width: 25px;
+            font-weight: bold;
+            color: #ff9de8;
+        }
+
+        @keyframes thankYouGlow {
+            from {
+                transform: scale(1);
+                text-shadow: 0 0 10px #ff69d9;
+            }
+
+            to {
+                transform: scale(1.08);
+                text-shadow:
+                    0 0 20px #ff69d9,
+                    0 0 35px #c000ff;
+            }
+        }
+
+        @keyframes thankYouTwinkle {
+            from {
+                opacity: 0.2;
+                transform: scale(0.7);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1.4);
+            }
+        }
+
+        @keyframes thankYouAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @media (max-width: 600px) {
+            #thankYouScreen h1 {
+                font-size: 30px;
+            }
+
+            #thankYouScreen .thank-you-main {
+                font-size: 17px;
+            }
+
+            #thankYouScreen .thank-you-sub {
+                font-size: 16px;
+            }
+        }
+    `;
+
+    document.head.appendChild(style);
+
+    // 30 seconds countdown
+    let timeLeft = 30;
+
+    const timer = setInterval(() => {
+
+        timeLeft--;
+
+        const timerElement =
+            document.getElementById("closeTimer");
+
+        if (timerElement) {
+            timerElement.textContent = timeLeft;
+        }
+
+        if (timeLeft <= 0) {
+
+            clearInterval(timer);
+
+            // Screen fade out
+            screen.style.transition = "opacity 1s ease";
+            screen.style.opacity = "0";
+
+            setTimeout(() => {
+
+                // Screen remove
+                screen.remove();
+
+                // Browser tab close karne ki request
+                window.close();
+
+                // Agar browser close na kare
+                setTimeout(() => {
+
+                    document.body.innerHTML = `
+                        <div style="
+                            background: #090014;
+                            color: white;
+                            height: 100vh;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            text-align: center;
+                            font-family: Arial, sans-serif;
+                            font-size: 22px;
+                        ">
+                            You can close this tab now ❤️
+                        </div>
+                    `;
+
+                }, 500);
+
+            }, 1000);
+        }
+
+    }, 1000);
+
+}

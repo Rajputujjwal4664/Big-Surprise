@@ -22,6 +22,193 @@
 
 <body>
 
+<!-- =========================================
+     RAJPUT UJJWAL LOGO INTRO
+========================================= -->
+
+<section id="rajputIntro" class="rajput-intro">
+
+    <div class="intro-sheet intro-sheet-1">
+        <span class="neon-beam"></span>
+    </div>
+    <div class="intro-sheet intro-sheet-2">
+        <span class="neon-beam"></span>
+    </div>
+    <div class="intro-sheet intro-sheet-3">
+        <span class="neon-beam"></span>
+    </div>
+    <div class="intro-sheet intro-sheet-4">
+        <span class="neon-beam"></span>
+    </div>
+
+    <div class="rajput-logo-box">
+
+        <div class="rajput-logo-frame" id="rajputLogoFrame">
+            <img src="assets/logo.png" alt="Rajput Ujjwal Logo">
+            <div class="logo-shards" id="logoShards"></div>
+        </div>
+
+        <div class="rajput-logo-name">
+            RAJPUT UJJWAL
+        </div>
+
+        <div class="rajput-logo-line"></div>
+
+        <div class="rajput-designed">
+            DESIGNED BY RAJPUT UJJWAL
+        </div>
+
+    </div>
+
+    <button id="rajputEnterBtn" class="rajput-enter-btn">
+        ENTER EXPERIENCE
+    </button>
+
+</section>
+
+
+<!-- =====================================================
+     LOCK SCREEN
+====================================================== -->
+
+<div id="developerLockScreen">
+
+    <!-- Birthday Countdown -->
+    <div class="birthday-countdown">
+        <div class="countdown-title">BIRTHDAY COUNTDOWN</div>
+
+        <div class="countdown-time">
+            <div>
+                <span id="countdownDays">00</span>
+                <small>DAYS</small>
+            </div>
+
+            <div>
+                <span id="countdownHours">00</span>
+                <small>HRS</small>
+            </div>
+
+            <div>
+                <span id="countdownMinutes">00</span>
+                <small>MIN</small>
+            </div>
+
+            <div>
+                <span id="countdownSeconds">00</span>
+                <small>SEC</small>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Four Photo Hint Cards -->
+    <div class="photo-hints">
+
+        <div class="hint-card" data-digit="1">
+            <div class="hint-inner">
+                <div class="hint-front">
+                    <img src="assets/photo1.jpeg" alt="Memory 1">
+                </div>
+
+                <div class="hint-back">
+                    <span>1</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="hint-card" data-digit="6">
+            <div class="hint-inner">
+                <div class="hint-front">
+                    <img src="assets/photo2.jpeg" alt="Memory 2">
+                </div>
+
+                <div class="hint-back">
+                    <span>6</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="hint-card" data-digit="1">
+            <div class="hint-inner">
+                <div class="hint-front">
+                    <img src="assets/photo3.jpeg" alt="Memory 3">
+                </div>
+
+                <div class="hint-back">
+                    <span>1</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="hint-card" data-digit="0">
+            <div class="hint-inner">
+                <div class="hint-front">
+                    <img src="assets/cutiee.jpeg" alt="Memory 4">
+                </div>
+
+                <div class="hint-back">
+                    <span>0</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Spotlight Focus Overlay -->
+    <div class="hint-focus-overlay"></div>
+
+
+    <!-- Center Lock Box -->
+    <div class="lock-box">
+
+        <div id="passwordEmoji" class="password-emoji">🙂</div>
+
+        <div class="lock-icon">🔐</div>
+
+        <div class="lock-label">
+            SECURE ACCESS REQUIRED
+        </div>
+
+        <h1>WELCOME</h1>
+
+        <p class="lock-message">
+            Find the hidden digits from the memories
+        </p>
+
+        <div class="lock-timer">
+            ACCESS AVAILABLE IN
+            <span id="lockTimer">05</span>
+            <small>For password hint, click on the photos 📸</small>
+        </div>
+
+        <div class="password-wrapper">
+
+            <input
+                type="password"
+                id="developerPassword"
+                placeholder="ENTER 4-DIGIT PASSWORD"
+                maxlength="4"
+                inputmode="numeric"
+                autocomplete="off"
+            >
+
+            <button
+                id="unlockBtn"
+                type="button">
+                UNLOCK
+            </button>
+
+        </div>
+
+        <p id="passwordMessage"></p>
+
+    </div>
+
+</div>
 
     <!-- =========================================
          OPENING SCREEN
@@ -815,10 +1002,64 @@
     <div class="spiritual-symbol symbol-3">🪷</div>
     <div class="spiritual-symbol symbol-4">✦</div>
 
-
     <div class="cake-content">
 
-        <!-- SMALL MESSAGE -->
+        <!-- =================================
+          WISH FIRST
+        ================================== -->
+
+        <div class="wish-section">
+
+            <div class="wish-heading">
+                Make a Wish ✨
+            </div>
+
+            <p class="wish-subtitle">
+                Close your eyes, make a wish
+                and write it here...
+            </p>
+
+            <div class="wish-box">
+
+                <!-- OM INSIDE WISH BOX -->
+                <div class="om-background">ॐ</div>
+
+                <textarea
+                    id="wishInput"
+                    maxlength="500"
+                    placeholder="Type your wish here..."
+                ></textarea>
+
+                <div class="wish-count">
+                    <span id="wishCount">0</span>/500
+                </div>
+
+            </div>
+
+
+            <!-- SEND BUTTON -->
+
+            <button
+                id="sendWishBtn"
+                class="send-wish-btn">
+
+                <span>🪷</span>
+                <span>Send My Wish</span>
+                <span>✨</span>
+
+            </button>
+
+            <div
+                id="wishStatus"
+                class="wish-status">
+            </div>
+
+        </div>
+
+
+        <!-- =================================
+             SMALL CAKE MESSAGE
+        ================================== -->
 
         <div class="cake-message">
 
@@ -827,7 +1068,6 @@
             </div>
 
         </div>
-
 
         <!-- =================================
              CAKE
@@ -876,70 +1116,14 @@
 
 
         <!-- =================================
-             WISH FIRST
-        ================================== -->
-
-        <div class="wish-section">
-
-            <div class="wish-heading">
-                Make a Wish ✨
-            </div>
-
-            <p class="wish-subtitle">
-                Close your eyes, make a wish
-                and write it here...
-            </p>
-
-
-            <div class="wish-box">
-
-                <textarea
-                    id="wishInput"
-                    maxlength="500"
-                    placeholder="Type your wish here..."
-                ></textarea>
-
-                <div class="wish-count">
-                    <span id="wishCount">0</span>/500
-                </div>
-
-            </div>
-
-
-            <button
-                id="sendWishBtn"
-                class="send-wish-btn">
-
-                <span>🪷</span>
-                <span>Send My Wish</span>
-                <span>✨</span>
-
-            </button>
-
-
-            <div
-                id="wishStatus"
-                class="wish-status">
-            </div>
-
-
-            <div class="wish-footer">
-                May your wish find its way to you. ❤️
-            </div>
-
-        </div>
-
-
-        <!-- =================================
              BLOW BUTTON
-             ONLY ONE BUTTON
         ================================== -->
 
         <div
             id="wishLockMessage"
             class="wish-lock-message">
 
-            ✨ Pehle dil se ek wish maango...
+            🔒 Send your wish first...
 
         </div>
 
@@ -961,7 +1145,7 @@
 
 
         <!-- =================================
-             FINAL BIRTHDAY MESSAGE
+             FINAL MESSAGE
         ================================== -->
 
         <div class="birthday-final">
@@ -979,7 +1163,7 @@
 
 
         <!-- =================================
-             FLOWING PETALS
+             FLOWER RAIN
         ================================== -->
 
         <div
@@ -989,7 +1173,7 @@
 
 
         <!-- =================================
-             ONE LAST THING
+             ONE LAST THING / VIDEO
         ================================== -->
 
         <div
@@ -999,7 +1183,6 @@
             <div class="last-thing-title">
                 One Last Thing... ✨
             </div>
-
 
             <button
                 id="revealVideoBtn"
@@ -1019,12 +1202,88 @@
                     playsinline>
 
                     <source
-                        src="assets/secret.mp4"
+                        src="test.mp4"
                         type="video/mp4">
 
                 </video>
 
             </div>
+
+        </div>
+
+        <!-- =========================================
+            DEVELOPER END SCREEN
+        ========================================= -->
+
+        <div id="developerEndScreen" class="developer-end-screen">
+
+            <div class="dev-particles"></div>
+
+            <div class="dev-glow"></div>
+
+            <div class="dev-logo">
+
+                <div class="dev-logo-ring"></div>
+
+                <div class="dev-logo-inner">
+                    RU
+                </div>
+
+                <div class="dev-code">
+                    &lt;/&gt;
+                </div>
+
+            </div>
+
+
+            <div class="dev-code-text">
+                while(dreams) {<br>
+                &nbsp;&nbsp;code();<br>
+                &nbsp;&nbsp;create();<br>
+                &nbsp;&nbsp;inspire();<br>
+                }
+            </div>
+
+
+            <div class="developer-line">
+                ✦ DESIGNED BY ✦
+            </div>
+
+
+            <h1 class="developer-name">
+                RAJPUT UJJWAL
+            </h1>
+
+
+            <div class="developer-role">
+                DEVELOPER
+            </div>
+
+
+            <div class="developer-tags">
+
+                <span>CODE</span>
+                <b>✦</b>
+                <span>CREATE</span>
+                <b>✦</b>
+                <span>INSPIRE</span>
+
+            </div>
+
+
+            <div class="developer-message">
+                Turning Ideas Into Reality... ♡
+            </div>
+
+
+            <button
+                id="closeWebsiteBtn"
+                class="close-website-btn">
+
+                <span>⏻</span>
+                <span>Close This</span>
+
+            </button>
 
         </div>
 

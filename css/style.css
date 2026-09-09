@@ -72,53 +72,49 @@ body {
 
     z-index: 0;
 
-    background-image:
-        radial-gradient(
-            1px 1px at 10% 20%,
-            rgba(255,255,255,0.8),
-            transparent
-        ),
-        radial-gradient(
-            1px 1px at 25% 70%,
-            rgba(255,255,255,0.7),
-            transparent
-        ),
-        radial-gradient(
-            1px 1px at 40% 30%,
-            rgba(255,255,255,0.6),
-            transparent
-        ),
-        radial-gradient(
-            1px 1px at 60% 15%,
-            rgba(255,255,255,0.8),
-            transparent
-        ),
-        radial-gradient(
-            1px 1px at 75% 65%,
-            rgba(255,255,255,0.7),
-            transparent
-        ),
-        radial-gradient(
-            1px 1px at 90% 35%,
-            rgba(255,255,255,0.8),
-            transparent
-        );
+    overflow: hidden;
+    pointer-events: none;
 
-    background-size: 220px 220px;
-
-    opacity: 0.65;
-
-    animation: starsMove 30s linear infinite;
+    background: transparent;
 }
 
-@keyframes starsMove {
+
+/* Individual background stars */
+
+.background-star {
+    position: absolute;
+
+    width: 2px;
+    height: 2px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    box-shadow:
+        0 0 4px rgba(255,255,255,0.9),
+        0 0 8px rgba(255,255,255,0.45);
+
+    opacity: 0.4;
+
+    animation:
+        distantStarMove
+        35s
+        linear
+        infinite;
+}
+
+
+@keyframes distantStarMove {
 
     from {
-        transform: translateY(0);
+        transform:
+            translate3d(0, 0, 0);
     }
 
     to {
-        transform: translateY(-220px);
+        transform:
+            translate3d(-55px, 30px, 0);
     }
 }
 
@@ -5050,7 +5046,7 @@ body {
    CANDLES
 ========================================= */
 
-.candles {
+.cake-candles {
     position: absolute;
 
     z-index: 5;
@@ -5147,7 +5143,7 @@ body {
 }
 
 
-.birthday-final h2 {
+.birthday-final h1 {
     margin: 0;
 
     font-size: clamp(34px, 6vw, 64px);
@@ -6466,65 +6462,125 @@ body {
 }
 
 
-/* =========================================
-   FALLING PETALS
-========================================= */
+/* =========================================================
+   FLOWER SHOWER — CAKE AREA
+========================================================= */
 
 .petal-container {
-    position: fixed;
+
+    position: absolute;
+
     inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 20;
 
     pointer-events: none;
 
     overflow: hidden;
 
-    z-index: 900;
+    opacity: 0;
+
+    transition:
+        opacity .5s ease;
 }
+
+
+.petal-container.active {
+
+    opacity: 1;
+}
+
+
+/* Individual flower */
 
 .petal {
+
     position: absolute;
 
-    top: -60px;
+    z-index: 25;
 
-    font-size: 24px;
+    pointer-events: none;
+
+    user-select: none;
+
+    line-height: 1;
+
+    filter:
+        drop-shadow(
+            0 0 8px
+            rgba(255,120,210,.7)
+        );
 
     animation:
-        petalFall linear forwards;
-
-    will-change:
-        transform,
-        opacity;
+        cakeFlowerFall
+        4s
+        ease-in
+        forwards;
 }
 
-@keyframes petalFall {
+
+/* Flower falls around cake */
+
+@keyframes cakeFlowerFall {
 
     0% {
+
         transform:
-            translateY(-60px)
-            translateX(0)
-            rotate(0deg);
+            translate3d(
+                0,
+                -10px,
+                0
+            )
+            rotate(0deg)
+            scale(.7);
 
         opacity: 0;
+
     }
 
     10% {
+
         opacity: 1;
+
     }
 
     50% {
+
         transform:
-            translateY(55vh)
-            translateX(60px)
-            rotate(180deg);
+            translate3d(
+                var(--fall-x),
+                var(--fall-y),
+                0
+            )
+            rotate(180deg)
+            scale(1);
+
+        opacity: 1;
+
+    }
+
+    80% {
+
+        opacity: .9;
+
     }
 
     100% {
+
         transform:
-            translateY(115vh)
-            translateX(-80px)
-            rotate(420deg);
+            translate3d(
+                calc(var(--fall-x) * 1.4),
+                calc(var(--fall-y) + 120px),
+                0
+            )
+            rotate(360deg)
+            scale(.75);
 
         opacity: 0;
+
     }
 }
 
@@ -6670,4 +6726,2583 @@ body {
     box-shadow:
         0 20px 80px
         rgba(0,0,0,.55);
+}
+
+/* =========================================
+   BIRTHDAY SCENE — RESPONSIVE SCROLL
+========================================= */
+
+#birthdayScene {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    min-height: 100vh;
+
+    display: none;
+
+    align-items: flex-start;
+    justify-content: center;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    box-sizing: border-box;
+
+    padding: 60px 20px 80px;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* Content ko poora space do */
+
+#birthdayScene .birthday-content {
+    width: min(900px, 92vw);
+
+    margin: auto;
+
+    padding: 20px 0 50px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    #birthdayScene {
+
+        align-items: flex-start;
+
+        padding:
+            45px 16px
+            80px;
+    }
+
+    #birthdayScene .birthday-content {
+
+        width: 94vw;
+
+        padding:
+            15px 0 60px;
+    }
+
+    #birthdayScene .continue-btn {
+
+        margin-bottom: 30px;
+    }
+}
+
+
+/* =========================================
+   SMALL HEIGHT DEVICES
+========================================= */
+
+@media (max-height: 700px) {
+
+    #birthdayScene {
+
+        padding-top: 30px;
+        padding-bottom: 70px;
+    }
+
+    #birthdayScene .birthday-content {
+
+        padding-bottom: 70px;
+    }
+}
+
+/* =========================================
+   CAKE SCENE — MOBILE + DESKTOP SCROLL FIX
+========================================= */
+
+.cake-scene {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100dvh;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: flex-start;
+
+    box-sizing: border-box;
+
+    padding:
+        45px 20px
+        80px;
+
+    scroll-behavior: smooth;
+}
+
+
+/* =========================================
+   CAKE POSITION
+========================================= */
+
+.cake-scene .cake {
+    flex-shrink: 0;
+
+    margin-top: 20px;
+}
+
+
+/* =========================================
+   WISH SECTION
+========================================= */
+
+.cake-scene .wish-section {
+
+    width: min(520px, 92vw);
+
+    flex-shrink: 0;
+
+    margin-top: 20px;
+
+    text-align: center;
+}
+
+
+/* =========================================
+   WISH BOX
+========================================= */
+
+.cake-scene .wish-box {
+
+    width: 100%;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   BLOW AREA
+========================================= */
+
+.cake-scene .wish-lock-message {
+
+    flex-shrink: 0;
+
+    margin-top: 25px;
+
+    text-align: center;
+}
+
+
+.cake-scene .blow-candles-btn {
+
+    flex-shrink: 0;
+
+    margin-top: 12px;
+
+    margin-bottom: 30px;
+}
+
+
+/* =========================================
+   FINAL MESSAGE
+========================================= */
+
+.cake-scene .birthday-final {
+
+    flex-shrink: 0;
+
+    margin-bottom: 30px;
+}
+
+
+/* =========================================
+   LAST THING
+========================================= */
+
+.cake-scene .last-thing {
+
+    flex-shrink: 0;
+
+    width: min(600px, 92vw);
+
+    margin-bottom: 50px;
+
+    text-align: center;
+}
+
+
+/* =========================================
+   SECRET VIDEO
+========================================= */
+
+.cake-scene .secret-video {
+
+    width: 100%;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .cake-scene {
+
+        padding:
+            25px 14px
+            70px;
+    }
+
+
+    .cake-scene .cake {
+
+        margin-top: 10px;
+
+        transform:
+            translateY(300px)
+            scale(.65);
+    }
+
+
+    .cake-scene .wish-section {
+
+        margin-top: -15px;
+
+        width: 94vw;
+    }
+
+
+    .cake-scene .birthday-final {
+
+        width: 94vw;
+
+        margin-top: 20px;
+    }
+
+
+    .cake-scene .last-thing {
+
+        width: 94vw;
+
+        margin-top: 20px;
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+========================================= */
+
+@media (max-height: 700px) and (max-width: 600px) {
+
+    .cake-scene {
+
+        padding-top: 15px;
+        padding-bottom: 60px;
+    }
+
+}
+
+/* =========================================================
+   DEVELOPER END SCREEN
+========================================================= */
+
+.developer-end-screen {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: none;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    overflow: hidden;
+
+    padding: 30px 20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(100, 80, 255, .20),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 50% 70%,
+            rgba(255, 30, 190, .15),
+            transparent 35%
+        ),
+        #03030a;
+
+    opacity: 0;
+
+}
+
+
+/* SCREEN ACTIVE */
+
+.developer-end-screen.active {
+
+    display: flex;
+
+    animation:
+        developerScreenIn
+        1.5s
+        ease
+        forwards;
+}
+
+
+@keyframes developerScreenIn {
+
+    from {
+
+        opacity: 0;
+
+        transform: scale(1.08);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform: scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   BACKGROUND GLOW
+========================================================= */
+
+.dev-glow {
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(120, 60, 255, .25),
+            transparent 68%
+        );
+
+    filter: blur(35px);
+
+    animation:
+        devGlowPulse
+        4s
+        ease-in-out
+        infinite;
+
+}
+
+
+@keyframes devGlowPulse {
+
+    0%,
+    100% {
+
+        transform: scale(.85);
+
+        opacity: .55;
+
+    }
+
+    50% {
+
+        transform: scale(1.15);
+
+        opacity: 1;
+
+    }
+
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.dev-logo {
+
+    position: relative;
+
+    width: 145px;
+    height: 145px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+
+    opacity: 0;
+
+    transform: scale(.2) rotate(-180deg);
+
+    animation:
+        devLogoIn
+        1.5s
+        cubic-bezier(.16,1,.3,1)
+        .4s
+        forwards;
+
+}
+
+
+@keyframes devLogoIn {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            scale(.2)
+            rotate(-180deg);
+
+    }
+
+    70% {
+
+        transform:
+            scale(1.08)
+            rotate(8deg);
+
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform:
+            scale(1)
+            rotate(0);
+
+    }
+
+}
+
+
+/* Logo ring */
+
+.dev-logo-ring {
+
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: 50%;
+
+    border:
+        2px solid rgba(120,180,255,.9);
+
+    box-shadow:
+        0 0 15px rgba(0,150,255,.8),
+        0 0 45px rgba(170,0,255,.6),
+        inset 0 0 25px rgba(255,0,220,.35);
+
+    animation:
+        logoRingRotate
+        8s
+        linear
+        infinite;
+
+}
+
+
+.dev-logo-ring::before,
+.dev-logo-ring::after {
+
+    content: "";
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255,80,220,.7);
+
+}
+
+
+.dev-logo-ring::before {
+
+    inset: 9px;
+
+}
+
+
+.dev-logo-ring::after {
+
+    inset: 20px;
+
+}
+
+
+@keyframes logoRingRotate {
+
+    from {
+
+        transform: rotate(0deg);
+
+    }
+
+    to {
+
+        transform: rotate(360deg);
+
+    }
+
+}
+
+
+/* RU */
+
+.dev-logo-inner {
+
+    position: relative;
+
+    z-index: 3;
+
+    font-family:
+        "Brush Script MT",
+        cursive;
+
+    font-size: 55px;
+
+    font-weight: bold;
+
+    font-style: italic;
+
+    color: white;
+
+    text-shadow:
+        0 0 8px #00c8ff,
+        0 0 20px #008cff,
+        0 0 35px #ff00d9;
+
+}
+
+
+/* Code symbol */
+
+.dev-code {
+
+    position: absolute;
+
+    bottom: 18px;
+
+    font-family: monospace;
+
+    font-size: 14px;
+
+    color: #ff62e8;
+
+    text-shadow:
+        0 0 12px #ff00d9;
+
+}
+
+
+/* =========================================================
+   CODE TEXT
+========================================================= */
+
+.dev-code-text {
+
+    position: absolute;
+
+    left: 6%;
+
+    top: 18%;
+
+    text-align: left;
+
+    font-family: monospace;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+    color: rgba(0,200,255,.65);
+
+    text-shadow:
+        0 0 8px rgba(0,180,255,.6);
+
+    opacity: 0;
+
+    animation:
+        sideCodeIn
+        1s
+        ease
+        1.8s
+        forwards;
+
+}
+
+
+@keyframes sideCodeIn {
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+
+/* =========================================================
+   DESIGNED BY
+========================================================= */
+
+.developer-line {
+
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    letter-spacing: 7px;
+
+    color: rgba(255,255,255,.65);
+
+    opacity: 0;
+
+    transform: translateY(20px);
+
+    animation:
+        devTextIn
+        1s
+        ease
+        1.8s
+        forwards;
+
+}
+
+
+@keyframes devTextIn {
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/* =========================================================
+   NAME
+========================================================= */
+
+.developer-name {
+
+    margin: 8px 0 0;
+
+    font-family:
+        "Brush Script MT",
+        "Segoe Script",
+        cursive;
+
+    font-size:
+        clamp(48px, 9vw, 95px);
+
+    font-weight: bold;
+
+    font-style: italic;
+
+    color: #fff;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 0 8px #fff,
+        0 0 20px #00c8ff,
+        0 0 40px #008cff,
+        0 0 70px #ff00d9;
+
+    opacity: 0;
+
+    transform: translateY(35px);
+
+    animation:
+        developerNameIn
+        1.3s
+        cubic-bezier(.16,1,.3,1)
+        2.1s
+        forwards;
+
+}
+
+
+@keyframes developerNameIn {
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+/* =========================================================
+   DEVELOPER
+========================================================= */
+
+.developer-role {
+
+    margin-top: -5px;
+
+    font-size: 14px;
+
+    letter-spacing: 9px;
+
+    color: #ff55d9;
+
+    text-shadow:
+        0 0 15px #ff00cc;
+
+    opacity: 0;
+
+    animation:
+        roleIn
+        1s
+        ease
+        3s
+        forwards;
+
+}
+
+
+@keyframes roleIn {
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+
+/* =========================================================
+   TAGS
+========================================================= */
+
+.developer-tags {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 18px;
+
+    font-size: 11px;
+
+    letter-spacing: 4px;
+
+    color: rgba(255,255,255,.7);
+
+    opacity: 0;
+
+    animation:
+        tagsIn
+        1s
+        ease
+        3.4s
+        forwards;
+
+}
+
+
+.developer-tags b {
+
+    color: #ff52d8;
+
+    text-shadow:
+        0 0 10px #ff00d4;
+
+}
+
+
+@keyframes tagsIn {
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.developer-message {
+
+    margin-top: 18px;
+
+    font-size: 14px;
+
+    letter-spacing: 2px;
+
+    color: rgba(255,255,255,.65);
+
+    opacity: 0;
+
+    animation:
+        messageIn
+        1s
+        ease
+        3.8s
+        forwards;
+
+}
+
+
+@keyframes messageIn {
+
+    to {
+
+        opacity: 1;
+
+    }
+
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.close-website-btn {
+
+    margin-top: 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    padding: 13px 32px;
+
+    min-width: 170px;
+
+    border-radius: 999px;
+
+    border:
+        1px solid rgba(255,80,220,.6);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,30,150,.2),
+            rgba(30,100,255,.18)
+        );
+
+    color: white;
+
+    font-size: 13px;
+
+    letter-spacing: 2px;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(15px);
+
+    box-shadow:
+        0 0 20px rgba(255,0,200,.15);
+
+    opacity: 0;
+
+    transform: translateY(20px);
+
+    animation:
+        closeButtonIn
+        1s
+        ease
+        4.3s
+        forwards;
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease,
+        background .3s ease;
+
+}
+
+
+@keyframes closeButtonIn {
+
+    to {
+
+        opacity: 1;
+
+        transform: translateY(0);
+
+    }
+
+}
+
+
+.close-website-btn:hover {
+
+    transform:
+        translateY(-4px)
+        scale(1.04);
+
+    box-shadow:
+        0 0 35px rgba(255,0,210,.5),
+        0 0 60px rgba(0,120,255,.25);
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .developer-end-screen {
+
+        padding:
+            25px 15px;
+
+    }
+
+    .dev-logo {
+
+        width: 115px;
+        height: 115px;
+
+        margin-bottom: 18px;
+
+    }
+
+    .dev-logo-inner {
+
+        font-size: 42px;
+
+    }
+
+    .developer-line {
+
+        font-size: 9px;
+
+        letter-spacing: 4px;
+
+    }
+
+    .developer-name {
+
+        font-size: 48px;
+
+        line-height: 1.05;
+
+    }
+
+    .developer-role {
+
+        font-size: 10px;
+
+        letter-spacing: 6px;
+
+    }
+
+    .developer-tags {
+
+        gap: 8px;
+
+        font-size: 8px;
+
+        letter-spacing: 2px;
+
+    }
+
+    .developer-message {
+
+        font-size: 11px;
+
+    }
+
+    .dev-code-text {
+
+        left: 5%;
+
+        top: 12%;
+
+        font-size: 8px;
+
+    }
+
+}
+
+/* =========================================================
+   THANK YOU SCREEN
+========================================================= */
+
+#thankYouScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+    text-align: center;
+
+    background:
+        radial-gradient(circle at 50% 35%,
+        rgba(255, 120, 190, 0.18),
+        transparent 35%),
+        linear-gradient(135deg,
+        #10051f,
+        #240b3d,
+        #090313);
+
+    color: white;
+
+    opacity: 0;
+    transform: scale(1.08);
+
+    transition:
+        opacity 1.2s ease,
+        transform 1.2s ease;
+}
+
+#thankYouScreen.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#thankYouScreen::before,
+#thankYouScreen::after {
+    content: "✦  ✧  ⋆  ✦  ✧  ⋆  ✦";
+
+    position: absolute;
+    width: 100%;
+    left: 0;
+
+    color: rgba(255, 210, 245, 0.6);
+    font-size: 24px;
+    letter-spacing: 25px;
+
+    animation: thankYouStars 8s linear infinite;
+}
+
+#thankYouScreen::before {
+    top: 12%;
+}
+
+#thankYouScreen::after {
+    bottom: 15%;
+    animation-delay: -4s;
+}
+
+.thank-you-content {
+    position: relative;
+    z-index: 2;
+
+    width: min(90%, 650px);
+    padding: 30px 20px;
+}
+
+.thank-you-om {
+    font-size: 55px;
+    color: #ffd6f6;
+
+    text-shadow:
+        0 0 15px #ff8ed8,
+        0 0 35px #ff4fc3;
+
+    animation: omGlow 2.5s ease-in-out infinite;
+}
+
+.thank-you-content h1 {
+    margin: 18px 0;
+
+    font-size: clamp(32px, 7vw, 68px);
+    font-weight: 700;
+
+    background: linear-gradient(
+        90deg,
+        #fff,
+        #ffd0f0,
+        #ff8ed8,
+        #fff
+    );
+
+    background-size: 250% auto;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation: thankYouText 4s linear infinite;
+}
+
+.thank-you-main {
+    margin: 20px 0;
+
+    font-size: clamp(18px, 3vw, 27px);
+    line-height: 1.7;
+    color: #ffe8f8;
+}
+
+.thank-you-sub {
+    font-size: clamp(14px, 2.5vw, 19px);
+    line-height: 1.8;
+    color: #e8cce3;
+}
+
+.thank-you-line {
+    width: 130px;
+    height: 2px;
+
+    margin: 28px auto;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #ff9bdc,
+        transparent
+    );
+
+    box-shadow: 0 0 15px #ff8ed8;
+}
+
+.thank-you-footer {
+    font-size: 17px;
+    color: #ffbde7;
+}
+
+.developer-text {
+    margin-top: 35px;
+
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.close-countdown {
+    margin-top: 25px;
+
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+#closeTimer {
+    display: inline-block;
+    min-width: 20px;
+
+    color: #ffb2e6;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+@keyframes thankYouStars {
+
+    0% {
+        transform: translateX(-20px);
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(20px);
+        opacity: 0.3;
+    }
+
+}
+
+@keyframes omGlow {
+
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: scale(1.12);
+        opacity: 1;
+    }
+
+}
+
+@keyframes thankYouText {
+
+    0% {
+        background-position: 0% center;
+    }
+
+    100% {
+        background-position: 250% center;
+    }
+
+}
+
+
+/* =====================================================
+   LOCK SCREEN
+===================================================== */
+
+#developerLockScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999998;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(circle at center, #280038, transparent 50%),
+        #050008;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    overflow: hidden;
+    transition: opacity 1s ease;
+}
+
+#developerLockScreen.active {
+    display: flex;
+    opacity: 1;
+}
+
+.lock-box {
+    position:relative;
+    z-index: 30;
+    width: min(90%, 390px);
+    padding: 35px 25px;
+    border: 1px solid rgba(255, 100, 230, 0.5);
+    border-radius: 20px;
+    background: rgba(20, 0, 30, 0.92);
+    box-shadow:
+        0 0 30px rgba(190, 0, 255, 0.3),
+        inset 0 0 30px rgba(255, 0, 200, 0.05);
+}
+
+.lock-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+    animation: lockPulse 2s infinite alternate;
+}
+
+.lock-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #ff8de7;
+}
+
+.lock-box h1 {
+    margin: 15px 0 8px;
+    font-size: 35px;
+    letter-spacing: 5px;
+}
+
+.lock-message {
+    color: #d8bfd5;
+    font-size: 14px;
+}
+
+.lock-timer {
+    margin: 25px 0;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #bca4ba;
+}
+
+#lockTimer {
+    color: #ff8de7;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.password-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#developerPassword {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px;
+    border: 1px solid #75416f;
+    border-radius: 8px;
+    outline: none;
+    background: #100017;
+    color: white;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+#developerPassword:focus {
+    border-color: #ff69d9;
+    box-shadow: 0 0 15px rgba(255, 105, 217, 0.3);
+}
+
+#unlockBtn {
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: linear-gradient(90deg, #a000ff, #ff35c9);
+    color: white;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+#passwordMessage {
+    min-height: 20px;
+    margin-top: 18px;
+    font-size: 13px;
+    color: #ff7fdf;
+}
+
+/* =========================================
+   RAJPUT UJJWAL LOGO INTRO
+========================================= */
+
+.rajput-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(circle at center, #092d4c 0%, #03101f 42%, #01050d 100%);
+    perspective: 1200px;
+}
+
+/* Circuit-style background */
+.rajput-intro::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: .28;
+    background:
+        linear-gradient(90deg, transparent 49%, rgba(0,190,255,.2) 50%, transparent 51%),
+        linear-gradient(0deg, transparent 49%, rgba(0,190,255,.16) 50%, transparent 51%);
+    background-size: 75px 75px;
+    animation: circuitMove 18s linear infinite;
+}
+
+.rajput-intro::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle, rgba(0,190,255,.2) 1px, transparent 1px);
+    background-size: 45px 45px;
+    opacity: .25;
+}
+
+@keyframes circuitMove {
+    from {
+        background-position: 0 0, 0 0;
+    }
+
+    to {
+        background-position: 75px 75px, -75px -75px;
+    }
+}
+
+/* Four sheets */
+.intro-sheet {
+    position: absolute;
+    width: 48vw;
+    height: 48vh;
+    min-width: 260px;
+    min-height: 220px;
+    border: 1px solid rgba(0, 205, 255, .7);
+    background:
+        linear-gradient(135deg,
+            rgba(0, 198, 255, .22),
+            rgba(0, 22, 47, .48)
+        );
+    box-shadow:
+        0 0 22px rgba(0, 194, 255, .45),
+        inset 0 0 35px rgba(0, 180, 255, .13);
+    backdrop-filter: blur(8px);
+    opacity: .8;
+}
+
+/* Sheet corners */
+.intro-sheet::before,
+.intro-sheet::after {
+    content: "";
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    border-color: #00d9ff;
+}
+
+.intro-sheet::before {
+    top: 15px;
+    left: 15px;
+    border-top: 2px solid;
+    border-left: 2px solid;
+}
+
+.intro-sheet::after {
+    right: 15px;
+    bottom: 15px;
+    border-right: 2px solid;
+    border-bottom: 2px solid;
+}
+
+.intro-sheet-1 {
+    top: 0;
+    left: 0;
+    transform: translate(-110%, -110%) rotate(-32deg);
+    animation: sheet1In 2s cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+.intro-sheet-2 {
+    top: 0;
+    right: 0;
+    transform: translate(110%, -110%) rotate(32deg);
+    animation: sheet2In 2s cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+.intro-sheet-3 {
+    bottom: 0;
+    left: 0;
+    transform: translate(-110%, 110%) rotate(32deg);
+    animation: sheet3In 2s cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+.intro-sheet-4 {
+    right: 0;
+    bottom: 0;
+    transform: translate(110%, 110%) rotate(-32deg);
+    animation: sheet4In 2s cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+@keyframes sheet1In {
+    to {
+        transform: translate(0, 0) rotate(0);
+    }
+}
+
+@keyframes sheet2In {
+    to {
+        transform: translate(0, 0) rotate(0);
+    }
+}
+
+@keyframes sheet3In {
+    to {
+        transform: translate(0, 0) rotate(0);
+    }
+}
+
+@keyframes sheet4In {
+    to {
+        transform: translate(0, 0) rotate(0);
+    }
+}
+
+/* Logo */
+.rajput-logo-box {
+    position: relative;
+    z-index: 5;
+    width: min(430px, 82vw);
+    text-align: center;
+    opacity: 0;
+    transform: scale(.35);
+    filter: blur(12px);
+    animation: rajputLogoShow 1.5s ease 2.1s forwards;
+}
+
+.rajput-logo-frame {
+    position: relative;
+    padding: 14px;
+    background: rgba(0, 20, 42, .55);
+    border: 1px solid rgba(0, 211, 255, .8);
+    clip-path: polygon(
+        10% 0,
+        90% 0,
+        100% 10%,
+        100% 90%,
+        90% 100%,
+        10% 100%,
+        0 90%,
+        0 10%
+    );
+    box-shadow:
+        0 0 18px #00c8ff,
+        0 0 55px rgba(0, 150, 255, .5),
+        inset 0 0 28px rgba(0, 170, 255, .15);
+}
+
+.rajput-logo-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 18px #00cfff);
+}
+
+.rajput-logo-name {
+    margin-top: 22px;
+    color: #b9f3ff;
+    font-size: clamp(15px, 3vw, 22px);
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-shadow: 0 0 15px #00c8ff;
+}
+
+.rajput-logo-line {
+    width: 155px;
+    height: 1px;
+    margin: 14px auto;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #00d9ff,
+        transparent
+    );
+    box-shadow: 0 0 10px #00cfff;
+}
+
+.rajput-designed {
+    color: #d8f9ff;
+    font-size: clamp(9px, 2vw, 12px);
+    letter-spacing: 3px;
+    font-weight: 500;
+}
+
+@keyframes rajputLogoShow {
+    0% {
+        opacity: 0;
+        transform: scale(.35);
+        filter: blur(12px);
+    }
+
+    65% {
+        opacity: 1;
+        filter: blur(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+/* Enter button */
+.rajput-enter-btn {
+    position: absolute;
+    z-index: 10;
+    bottom: 8%;
+    padding: 15px 32px;
+    border: 1px solid #00cfff;
+    background: rgba(0, 125, 190, .12);
+    color: #c7f6ff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    cursor: pointer;
+    opacity: 0;
+    animation: rajputButtonShow 1s ease 4s forwards;
+    transition: .3s;
+}
+
+.rajput-enter-btn:hover {
+    color: white;
+    background: #008dbd;
+    box-shadow:
+        0 0 18px #00cfff,
+        0 0 45px rgba(0, 190, 255, .5);
+    transform: translateY(-3px);
+}
+
+@keyframes rajputButtonShow {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Outro broken mirror effect */
+.rajput-intro.mirror-out {
+    animation: introDarkOut 1.5s ease forwards;
+}
+
+.rajput-intro.mirror-out .rajput-logo-box {
+    animation: logoBreak 1.2s ease forwards;
+}
+
+.rajput-intro.mirror-out .intro-sheet-1 {
+    animation: breakSheet1 1.2s ease forwards;
+}
+
+.rajput-intro.mirror-out .intro-sheet-2 {
+    animation: breakSheet2 1.2s ease forwards;
+}
+
+.rajput-intro.mirror-out .intro-sheet-3 {
+    animation: breakSheet3 1.2s ease forwards;
+}
+
+.rajput-intro.mirror-out .intro-sheet-4 {
+    animation: breakSheet4 1.2s ease forwards;
+}
+
+@keyframes logoBreak {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(.2) rotate(35deg);
+        filter: blur(18px);
+    }
+}
+
+@keyframes breakSheet1 {
+    to {
+        transform: translate(-120%, -130%) rotate(-75deg);
+        opacity: 0;
+    }
+}
+
+@keyframes breakSheet2 {
+    to {
+        transform: translate(120%, -130%) rotate(75deg);
+        opacity: 0;
+    }
+}
+
+@keyframes breakSheet3 {
+    to {
+        transform: translate(-120%, 130%) rotate(75deg);
+        opacity: 0;
+    }
+}
+
+@keyframes breakSheet4 {
+    to {
+        transform: translate(120%, 130%) rotate(-75deg);
+        opacity: 0;
+    }
+}
+
+@keyframes introDarkOut {
+    to {
+        background: #000;
+    }
+}
+
+@media (max-width: 600px) {
+    .intro-sheet {
+        width: 55vw;
+        height: 43vh;
+    }
+
+    .rajput-logo-name {
+        letter-spacing: 3px;
+    }
+
+    .rajput-designed {
+        letter-spacing: 2px;
+    }
+}
+
+/* =========================================
+   PREMIUM LOGO SHATTER OUTRO
+========================================= */
+
+.rajput-logo-frame {
+    overflow: visible;
+}
+
+.rajput-logo-frame::before {
+    content: "";
+    position: absolute;
+    inset: -25px;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(255,255,255,.95) 0%,
+        rgba(0,220,255,.7) 12%,
+        rgba(0,150,255,.25) 35%,
+        transparent 70%
+    );
+    opacity: 0;
+    transform: scale(.2);
+    pointer-events: none;
+}
+
+.logo-shards {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    pointer-events: none;
+}
+
+.logo-shard {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/logo.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    border: 1px solid rgba(160,245,255,.9);
+    box-shadow:
+        0 0 8px rgba(0,210,255,.9),
+        inset 0 0 8px rgba(255,255,255,.4);
+    transform-origin: center;
+    opacity: 0;
+}
+
+/* Different broken-glass shapes */
+.shard-1 {
+    clip-path: polygon(0 0, 34% 0, 27% 35%, 0 28%);
+}
+
+.shard-2 {
+    clip-path: polygon(34% 0, 67% 0, 55% 31%, 27% 35%);
+}
+
+.shard-3 {
+    clip-path: polygon(67% 0, 100% 0, 100% 32%, 55% 31%);
+}
+
+.shard-4 {
+    clip-path: polygon(0 28%, 27% 35%, 22% 66%, 0 72%);
+}
+
+.shard-5 {
+    clip-path: polygon(27% 35%, 55% 31%, 63% 60%, 22% 66%);
+}
+
+.shard-6 {
+    clip-path: polygon(55% 31%, 100% 32%, 100% 65%, 63% 60%);
+}
+
+.shard-7 {
+    clip-path: polygon(0 72%, 22% 66%, 35% 100%, 0 100%);
+}
+
+.shard-8 {
+    clip-path: polygon(22% 66%, 63% 60%, 67% 100%, 35% 100%);
+}
+
+.shard-9 {
+    clip-path: polygon(63% 60%, 100% 65%, 100% 100%, 67% 100%);
+}
+
+.shard-10 {
+    clip-path: polygon(27% 35%, 38% 18%, 55% 31%, 63% 60%, 48% 72%, 22% 66%);
+}
+
+.shard-11 {
+    clip-path: polygon(38% 18%, 67% 0, 55% 31%);
+}
+
+.shard-12 {
+    clip-path: polygon(63% 60%, 82% 42%, 100% 65%, 67% 100%);
+}
+
+/* Bright flash */
+.rajput-intro.logo-shatter .rajput-logo-frame::before {
+    animation: logoFlash .75s ease-out forwards;
+}
+
+@keyframes logoFlash {
+    0% {
+        opacity: 0;
+        transform: scale(.15);
+    }
+
+    35% {
+        opacity: 1;
+        transform: scale(1.25);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(2.5);
+    }
+}
+
+/* Hide original logo after breaking */
+.rajput-intro.logo-shatter .rajput-logo-frame > img {
+    animation: originalLogoDisappear .45s ease forwards;
+}
+
+@keyframes originalLogoDisappear {
+    0% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+
+    45% {
+        opacity: 1;
+        filter: brightness(5);
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Shard animation */
+.rajput-intro.logo-shatter .logo-shard {
+    animation-duration: 5.0s;
+    animation-timing-function: cubic-bezier(.12,.65,.18,1);
+    animation-fill-mode: forwards;
+}
+
+.rajput-intro.logo-shatter .shard-1 {
+    animation-name: shardOne;
+}
+
+.rajput-intro.logo-shatter .shard-2 {
+    animation-name: shardTwo;
+}
+
+.rajput-intro.logo-shatter .shard-3 {
+    animation-name: shardThree;
+}
+
+.rajput-intro.logo-shatter .shard-4 {
+    animation-name: shardFour;
+}
+
+.rajput-intro.logo-shatter .shard-5 {
+    animation-name: shardFive;
+}
+
+.rajput-intro.logo-shatter .shard-6 {
+    animation-name: shardSix;
+}
+
+.rajput-intro.logo-shatter .shard-7 {
+    animation-name: shardSeven;
+}
+
+.rajput-intro.logo-shatter .shard-8 {
+    animation-name: shardEight;
+}
+
+.rajput-intro.logo-shatter .shard-9 {
+    animation-name: shardNine;
+}
+
+.rajput-intro.logo-shatter .shard-10 {
+    animation-name: shardTen;
+}
+
+.rajput-intro.logo-shatter .shard-11 {
+    animation-name: shardEleven;
+}
+
+.rajput-intro.logo-shatter .shard-12 {
+    animation-name: shardTwelve;
+}
+
+@keyframes shardOne {
+    0% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
+    100% { opacity: 0; transform: translate(-230px,-190px) rotate(-75deg) scale(.15); }
+}
+
+@keyframes shardTwo {
+    0% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
+    100% { opacity: 0; transform: translate(-65px,-280px) rotate(45deg) scale(.2); }
+}
+
+@keyframes shardThree {
+    0% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
+    100% { opacity: 0; transform: translate(260px,-180px) rotate(90deg) scale(.15); }
+}
+
+@keyframes shardFour {
+    0% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
+    100% { opacity: 0; transform: translate(-300px,-20px) rotate(-110deg) scale(.2); }
+}
+
+@keyframes shardFive {
+    0% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
+    100% { opacity: 0; transform: translate(-100px,120px) rotate(160deg) scale(.1); }
+}
+
+@keyframes shardSix {
+    0% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
+    100% { opacity: 0; transform: translate(280px,80px) rotate(-130deg) scale(.15); }
+}
+
+@keyframes shardSeven {
+    0% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
+    100% { opacity: 0; transform: translate(-250px,230px) rotate(120deg) scale(.15); }
+}
+
+@keyframes shardEight {
+    0% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
+    100% { opacity: 0; transform: translate(-30px,300px) rotate(-70deg) scale(.2); }
+}
+
+@keyframes shardNine {
+    0% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
+    100% { opacity: 0; transform: translate(260px,250px) rotate(105deg) scale(.15); }
+}
+
+@keyframes shardTen {
+    0% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
+    100% { opacity: 0; transform: translate(-130px,40px) rotate(-180deg) scale(.1); }
+}
+
+@keyframes shardEleven {
+    0% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
+    100% { opacity: 0; transform: translate(180px,-300px) rotate(70deg) scale(.1); }
+}
+
+@keyframes shardTwelve {
+    0% { opacity: 1; transform: translate(0,0) rotate(0) scale(1); }
+    100% { opacity: 0; transform: translate(320px,160px) rotate(-160deg) scale(.1); }
+}
+
+/* Blue-white light rays */
+.rajput-intro.logo-shatter {
+    animation: introFlashBackground .9s ease forwards;
+}
+
+@keyframes introFlashBackground {
+    0% {
+        background-color: #03101f;
+    }
+
+    35% {
+        background-color: #d9faff;
+    }
+
+    55% {
+        background-color: #06253d;
+    }
+
+    100% {
+        background-color: #01050d;
+        opacity: 0;
+    }
+}
+
+/* Text also fades with the logo */
+.rajput-intro.logo-shatter .rajput-logo-name,
+.rajput-intro.logo-shatter .rajput-logo-line,
+.rajput-intro.logo-shatter .rajput-designed,
+.rajput-intro.logo-shatter .rajput-enter-btn {
+    animation: textBreak .7s ease forwards;
+}
+
+@keyframes textBreak {
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(12px);
+    }
+}
+
+/* =========================================
+   MOVING NEON LIGHT ON FOUR GLASS PLATES
+========================================= */
+
+.rajput-intro .intro-sheet {
+    position: absolute;
+    overflow: hidden;
+}
+
+.rajput-intro .intro-sheet .neon-beam {
+    position: absolute;
+    width: 70px;
+    height: 6px;
+    border-radius: 50%;
+
+    background: linear-gradient(
+        90deg,
+        #9400d3,
+        #4b0082,
+        #0000ff,
+        #00ffff,
+        #00ff00,
+        #ffff00,
+        #ff7f00,
+        #ff0000
+    );
+
+    box-shadow:
+        0 0 5px #fff,
+        0 0 10px #9400d3,
+        0 0 18px #0000ff,
+        0 0 28px #00ffff,
+        0 0 40px #00ff00,
+        0 0 55px #ff00ff;
+
+    filter: brightness(1.8) saturate(1.7);
+    pointer-events: none;
+    z-index: 100;
+
+    offset-path: inset(0 round 22px);
+    offset-distance: 0%;
+    animation: borderRun 3.5s linear infinite;
+}
+
+@keyframes borderRun {
+    0% {
+        offset-distance: 0%;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.8);
+    }
+
+    5% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.15);
+    }
+
+    95% {
+        opacity: 1;
+    }
+
+    100% {
+        offset-distance: 100%;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.8);
+    }
+}
+
+
+/* =========================================
+   16 OCT BIRTHDAY COUNTDOWN
+========================================= */
+
+.birthday-countdown {
+    position: fixed !important;
+    top: 22px !important;
+    left: 50% !important;
+    right: auto !important;
+
+    transform: translateX(-50%) !important;
+
+    width: max-content;
+    max-width: 90vw;
+    padding: 12px 15px;
+
+    text-align: center;
+    z-index: 10000001 !important;
+
+    border: 1px solid rgba(255, 141, 231, 0.35);
+    border-radius: 14px;
+
+    background: rgba(15, 0, 25, 0.78);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(255, 0, 200, 0.12);
+}
+
+.countdown-title {
+    margin-bottom: 8px;
+    color: #ff8de7;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.countdown-time {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.countdown-time div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 35px;
+}
+
+.countdown-time span {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.countdown-time small {
+    margin-top: 3px;
+    color: #bca4ba;
+    font-size: 8px;
+}
+
+
+/* =========================================
+   FULL SCREEN LOCK SCREEN
+========================================= */
+
+#developerLockScreen {
+    position: fixed !important;
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 9999998 !important;
+
+    background:
+        radial-gradient(circle at center, #280038, transparent 50%),
+        #050008;
+
+    color: white;
+    text-align: center;
+    opacity: 0;
+    overflow: hidden;
+
+    --spot-x: 0%;
+    --spot-y: 50%;
+
+    transition: opacity 1s ease;
+}
+
+#developerLockScreen.active {
+    display: flex !important;
+    opacity: 1 !important;
+}
+
+
+/* Lock screen darkness layer */
+
+#developerLockScreen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    z-index: 1;
+    pointer-events: none;
+
+    background: radial-gradient(
+        circle 190px at var(--spot-x) var(--spot-y),
+        rgba(255, 255, 255, 0.30) 0%,
+        rgba(255, 141, 231, 0.18) 22%,
+        rgba(0, 0, 0, 0.40) 55%,
+        rgba(0, 0, 0, 0.88) 100%
+    );
+}
+
+
+/* Lock screen content */
+
+#developerLockScreen > * {
+    position: relative;
+    z-index: 3;
+}
+
+
+/* =========================================
+   PHOTO HINTS
+========================================= */
+
+#developerLockScreen .photo-hints {
+    position: absolute;
+    inset: 0;
+
+    z-index: 5;
+    pointer-events: none;
+}
+
+#developerLockScreen .hint-card {
+    z-index: 6;
+    pointer-events: auto;
+}
+
+#developerLockScreen.photo-focus .hint-card.focused {
+    z-index: 8;
+    transform: scale(1.35) !important;
+    filter: brightness(1.3);
+}
+
+
+/* =========================================
+   PHOTO CARD DESIGN
+========================================= */
+
+.hint-card {
+    position: absolute;
+
+    width: 125px;
+    height: 145px;
+
+    perspective: 1000px;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.hint-card:nth-child(1) {
+    top: 18%;
+    left: 7%;
+    transform: rotate(-8deg);
+}
+
+.hint-card:nth-child(2) {
+    top: 18%;
+    right: 7%;
+    transform: rotate(8deg);
+}
+
+.hint-card:nth-child(3) {
+    bottom: 15%;
+    left: 7%;
+    transform: rotate(8deg);
+}
+
+.hint-card:nth-child(4) {
+    bottom: 15%;
+    right: 7%;
+    transform: rotate(-8deg);
+}
+
+.hint-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    transform-style: preserve-3d;
+    transition: transform .75s ease;
+}
+
+.hint-card.flipped .hint-inner {
+    transform: rotateY(180deg);
+}
+
+.hint-front,
+.hint-back {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border: 2px solid rgba(255, 141, 231, .8);
+    border-radius: 15px;
+
+    backface-visibility: hidden;
+
+    box-shadow:
+        0 0 18px rgba(190, 0, 255, .35),
+        inset 0 0 15px rgba(255, 255, 255, .08);
+}
+
+.hint-front {
+    background: #100017;
+}
+
+.hint-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hint-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, #4b006b, #d000a8);
+}
+
+.hint-back span {
+    color: white;
+    font-size: 58px;
+    font-weight: bold;
+    text-shadow: 0 0 20px white;
+}
+
+
+/* =========================================
+   PASSWORD BOX — EXACT CENTER
+========================================= */
+
+#developerLockScreen .lock-box {
+    position: absolute !important;
+
+    top: 50% !important;
+    left: 50% !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    width: min(82vw, 320px) !important;
+    max-height: 75vh !important;
+
+    margin: 0 !important;
+    padding: 24px 20px !important;
+
+    box-sizing: border-box;
+    border-radius: 18px;
+
+    z-index: 30 !important;
+
+    background: rgba(20, 0, 30, .94);
+
+    box-shadow:
+        0 0 25px rgba(190, 0, 255, .28),
+        inset 0 0 25px rgba(255, 0, 200, .05);
+}
+
+
+/* =========================================
+   SECURITY TIMER — BOX KE ANDAR
+========================================= */
+
+#developerLockScreen .lock-timer {
+    position: relative !important;
+
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+
+    transform: none !important;
+
+    width: 100%;
+    margin: 0 0 18px !important;
+
+    text-align: center;
+    z-index: 5 !important;
+}
+
+#developerLockScreen #lockTimer {
+    display: block;
+    margin-top: 5px;
+
+    font-size: 18px !important;
+    font-weight: bold;
+}
+
+#developerLockScreen .lock-timer small {
+    display: block;
+    margin-top: 7px;
+
+    color: rgba(255, 255, 255, .7);
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+
+/* =========================================
+   LOCK EMOJI
+========================================= */
+
+#developerLockScreen .password-emoji {
+    position: relative !important;
+
+    top: auto !important;
+    left: auto !important;
+
+    transform: none !important;
+
+    margin: 4px auto 14px !important;
+
+    font-size: 42px;
+    z-index: 10;
+}
+
+#developerLockScreen .password-emoji.happy {
+    transform: scale(1.2) rotate(8deg) !important;
+}
+
+#developerLockScreen .password-emoji.sad {
+    transform: rotate(-8deg) !important;
+}
+
+#developerLockScreen .password-emoji.blink {
+    transform: scale(.95) !important;
+}
+
+
+/* =========================================
+   PASSWORD TEXT AND BUTTON
+========================================= */
+
+#developerLockScreen .lock-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+#developerLockScreen .lock-box h1 {
+    margin: 10px 0 6px;
+    font-size: 26px;
+    letter-spacing: 3px;
+}
+
+#developerLockScreen .lock-message {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+#developerLockScreen #developerPassword,
+#developerLockScreen #unlockBtn {
+    width: 100%;
+    padding: 12px;
+
+    box-sizing: border-box;
+    font-size: 12px;
+}
+
+#developerLockScreen #passwordMessage {
+    margin-top: 12px;
+    font-size: 11px;
+}
+
+#passwordMessage.success {
+    color: #8dffcf;
+    text-shadow: 0 0 12px rgba(141, 255, 207, .7);
+}
+
+#passwordMessage.error {
+    color: #ff7fdf;
+    animation: messageShake .35s ease;
+}
+
+@keyframes messageShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+
+/* =========================================
+   MOBILE RESPONSIVE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .birthday-countdown {
+        top: 12px !important;
+        left: 50% !important;
+        right: auto !important;
+
+        transform: translateX(-50%) !important;
+        padding: 10px 12px;
+    }
+
+    .countdown-time {
+        gap: 5px;
+    }
+
+    .countdown-time div {
+        min-width: 30px;
+    }
+
+    .countdown-time span {
+        font-size: 15px;
+    }
+
+    .hint-card {
+        width: 90px;
+        height: 110px;
+    }
+
+    .hint-card:nth-child(1) {
+        left: 3%;
+        top: 20%;
+    }
+
+    .hint-card:nth-child(2) {
+        right: 3%;
+        top: 20%;
+    }
+
+    .hint-card:nth-child(3) {
+        left: 3%;
+        bottom: 12%;
+    }
+
+    .hint-card:nth-child(4) {
+        right: 3%;
+        bottom: 12%;
+    }
+
+    .hint-back span {
+        font-size: 42px;
+    }
+
+    #developerLockScreen .lock-box {
+        width: min(84vw, 300px) !important;
+        max-height: 70vh !important;
+        padding: 20px 17px !important;
+    }
+
+    #developerLockScreen .lock-box h1 {
+        font-size: 23px;
+    }
+
+    #developerLockScreen .password-emoji {
+        font-size: 36px;
+    }
 }
