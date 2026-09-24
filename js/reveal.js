@@ -945,33 +945,33 @@ enterButton?.addEventListener("click", () => {
     const memories = [
 
         {
-            id: "photo1",
+            id: "Pookie",
             type: "image",
-            src: "assets/photo1.jpeg"
+            src: "assets/Pookie.jpeg"
         },
 
         {
-            id: "photo2",
+            id: "Black baby",
             type: "image",
-            src: "assets/photo2.jpeg"
+            src: "assets/Black baby.jpeg"
         },
 
         {
-            id: "video1",
+            id: "Laila",
             type: "video",
-            src: "assets/video1.mp4"
+            src: "assets/Laila.mp4"
         },
 
         {
-            id: "photo3",
+            id: "Shinchan",
             type: "image",
-            src: "assets/photo3.jpeg"
+            src: "assets/Shinchan.jpeg"
         },
 
         {
-            id: "video2",
+            id: "HBD",
             type: "video",
-            src: "assets/video2.mp4"
+            src: "assets/HBD.mp4"
         }
 
     ];
