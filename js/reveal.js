@@ -981,11 +981,11 @@ enterButton?.addEventListener("click", () => {
 
         const indexMap = {
 
-            "Pookie": 0,
+            Pookie: 0,
             "Black baby": 1,
-            "Laila": 2,
-            "Shinchan": 3,
-            "HBD": 4
+            Laila: 2,
+            Shinchan: 3,
+            HBD: 4
 
         };
 
