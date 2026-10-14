@@ -9306,3 +9306,32 @@ body {
         font-size: 36px;
     }
 }
+
+/* =========================================
+   MOBILE PHOTO POSITION FIX
+========================================= */
+
+@media (max-width: 600px) {
+
+    /* Photos ko 2 rows me adjust */
+    #developerLockScreen .photo-hints {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        row-gap: 25px;
+    }
+
+    /* Photo 1 & 2 → thoda UP */
+    #developerLockScreen .hint-card:nth-child(1),
+    #developerLockScreen .hint-card:nth-child(2) {
+        positon: relative;
+        top: -15px;
+    }
+
+    /* Photo 3 & 4 → thoda DOWN */
+    #developerLockScreen .hint-card:nth-child(3),
+    #developerLockScreen .hint-card:nth-child(4) {
+        positon: relative;
+        bottom: -30px;
+    }
+
+}

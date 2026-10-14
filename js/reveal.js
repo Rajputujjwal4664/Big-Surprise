@@ -2539,12 +2539,12 @@ function showThankYouScreen() {
             </p>
 
             <p class="developer-text">
-                Designed by Developer Rajput Ujjwal
+                Designed by someone who finds himself in you ❤️
             </p>
 
             <div class="close-countdown">
                 This surprise will end in
-                <span id="closeTimer">30</span>
+                <span id="closeTimer">25</span>
             </div>
 
         </div>
