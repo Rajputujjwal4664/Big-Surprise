@@ -2520,7 +2520,7 @@ function showThankYouScreen() {
 
             <div class="thank-you-om">ॐ</div>
 
-            <h1>Thank You Riya Ji ❤️</h1>
+            <h1>Thank You Nidhii Ji ❤️</h1>
 
             <p class="thank-you-main">
                 Aapne meri chhoti si duniya ko<br>
