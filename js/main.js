@@ -958,7 +958,7 @@ hintCards.forEach(function (card) {
        PASSWORD CHECK
     ========================================= */
 
-    const correctPassword = "1610";
+    const correctPassword = "2610";
 
     function unlockWebsite() {
 
